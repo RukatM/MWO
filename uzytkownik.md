@@ -12,3 +12,18 @@ większą elastyczność w wyborze metody płatności.
 jak dokonać zakupu krok po kroku.
 7. Jako użytkownik, chcę widzieć czas pozostały na decyzję (np. wyświetlany
 licznik czasu), aby móc szybko podjąć działanie.
+
+## DIAGRAMY PRZYPADKÓW UŻYCIA
+### Płatność za bilet
+
+```mermaid
+flowchart TD
+    A["Wybór metody płatności"] -- &lt;&lt;include&gt;&gt; --> B["Weryfikacja metody płatności"] & E["Anulowanie transakcji"]
+    B --> C["Realizacja płatności"]
+    C --> D["Potwierdzenie transakcji"]
+    F["Obsługa błędów płatności"] -- &lt;&lt;Extend&gt;&gt; --> C
+    n1["Użytkownik"] --> A
+
+    n1@{ shape: text}
+
+```
