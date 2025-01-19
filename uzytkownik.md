@@ -12,3 +12,17 @@ większą elastyczność w wyborze metody płatności.
 jak dokonać zakupu krok po kroku.
 7. Jako użytkownik, chcę widzieć czas pozostały na decyzję (np. wyświetlany
 licznik czasu), aby móc szybko podjąć działanie.
+
+## DIAGRAMY PRZYPADKÓW UŻYCIA
+### Otrzymanie instrukcji na ekranie
+
+```mermaid
+flowchart TD
+    A["Rozpoczęcie interakcji"] -- &lt;&lt;include&gt;&gt; --> B["Podstawowe instrukcje"] & E["Anulowanie transakcji"]
+    B --> C["Postępowanie według instrukcji"]
+    F["Szczegółowa pomoc"] -- &lt;&lt;Extend&gt;&gt; --> B
+    n1["Użytkownik"] --> A
+
+    n1@{ shape: text}
+
+```
