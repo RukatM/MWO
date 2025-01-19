@@ -24,5 +24,46 @@ flowchart TD
     n1["Użytkownik"] --> A
 
     n1@{ shape: text}
+```
 
+### Sprawdzenie poprawności transakcji
+
+``` mermaid
+flowchart TD
+    n1["Użytkownik"] --> A["Wybór biletu i metody płatności"]
+    A -- &lt;&lt;include&gt;&gt; --> B["Wyświetlenie podsumowania transakcji"]
+    B --> C["Potwierdzenie lub cofnięcie"]
+    C --> D["Kontynuacja lub anulowanie"]
+    C -- &lt;&lt;include&gt;&gt; --> E["Anulowanie transakcji"]
+    D -- &lt;&lt;extend&gt;&gt; --> F["Ostrzeżenie o błędnym wyborze"]
+    
+    n1@{ shape: text}
+ ```
+    
+### Wybór języka
+
+``` mermaid
+flowchart TD
+    n1["Użytkownik"] --> A["Uruchomienie biletomatu"]
+    A --> B["Wyświetlenie opcji języka"]
+    B --> C["Wybór języka"]
+    C -- &lt;&lt;include&gt;&gt; --> D["Ustawienie domyślnego języka"]
+    C --> E["Dostosowanie interfejsu"]
+    B -- &lt;&lt;extend&gt;&gt; --> F["Wyświetlenie listy popularnych języków"]
+    A -- &lt;&lt;include&gt;&gt; --> G["Anulowanie transakcji"]
+
+    n1@{ shape: text}
+```
+
+### Płatność za bilet
+
+```mermaid
+flowchart TD
+    A["Wybór metody płatności"] -- &lt;&lt;include&gt;&gt; --> B["Weryfikacja metody płatności"] & E["Anulowanie transakcji"]
+    B --> C["Realizacja płatności"]
+    C --> D["Potwierdzenie transakcji"]
+    F["Obsługa błędów płatności"] -- &lt;&lt;Extend&gt;&gt; --> C
+    n1["Użytkownik"] --> A
+
+    n1@{ shape: text}
 ```
