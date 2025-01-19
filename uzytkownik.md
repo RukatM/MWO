@@ -12,3 +12,19 @@ większą elastyczność w wyborze metody płatności.
 jak dokonać zakupu krok po kroku.
 7. Jako użytkownik, chcę widzieć czas pozostały na decyzję (np. wyświetlany
 licznik czasu), aby móc szybko podjąć działanie.
+
+## DIAGRAMY PRZYPADKÓW UŻYCIA
+### Wybór języka
+
+``` mermaid
+flowchart TD
+    n1["Użytkownik"] --> A["Uruchomienie biletomatu"]
+    A --> B["Wyświetlenie opcji języka"]
+    B --> C["Wybór języka"]
+    C -- &lt;&lt;include&gt;&gt; --> D["Ustawienie domyślnego języka"]
+    C --> E["Dostosowanie interfejsu"]
+    B -- &lt;&lt;extend&gt;&gt; --> F["Wyświetlenie listy popularnych języków"]
+    A -- &lt;&lt;include&gt;&gt; --> G["Anulowanie transakcji"]
+
+    n1@{ shape: text}
+```
