@@ -14,6 +14,7 @@ jak dokonać zakupu krok po kroku.
 licznik czasu), aby móc szybko podjąć działanie.
 
 ## DIAGRAMY PRZYPADKÓW UŻYCIA
+
 ### Wybór języka
 
 ``` mermaid
@@ -25,6 +26,19 @@ flowchart TD
     C --> E["Dostosowanie interfejsu"]
     B -- &lt;&lt;extend&gt;&gt; --> F["Wyświetlenie listy popularnych języków"]
     A -- &lt;&lt;include&gt;&gt; --> G["Anulowanie transakcji"]
+
+    n1@{ shape: text}
+```
+
+### Płatność za bilet
+
+```mermaid
+flowchart TD
+    A["Wybór metody płatności"] -- &lt;&lt;include&gt;&gt; --> B["Weryfikacja metody płatności"] & E["Anulowanie transakcji"]
+    B --> C["Realizacja płatności"]
+    C --> D["Potwierdzenie transakcji"]
+    F["Obsługa błędów płatności"] -- &lt;&lt;Extend&gt;&gt; --> C
+    n1["Użytkownik"] --> A
 
     n1@{ shape: text}
 ```
