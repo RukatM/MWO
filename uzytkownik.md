@@ -84,3 +84,26 @@ flowchart TD
 
     n1@{ shape: text}
 ```
+
+## DIAGRAMY SEKWENCJI
+
+### DIAGRAM SEKWENCJI DLA PRZYPADKU UŻYCIA LOGOWANIA UŻYTKOWNIKA
+
+- **AKTOR**: Użytkownik
+- **OBIEKTY**: Interfejs logowania, Serwer aplikacji, Baza danych
+- **KOLEJNOŚĆ KOMUNIKATÓW**:
+  - Użytkownik wysyła dane logowania do interfejsu.
+  - Interfejs przekazuje dane do serwera.
+  - Serwer wysyła zapytanie do bazy danych.
+  - Baza danych odpowiada.
+  - Serwer zwraca wynik do interfejsu.
+  - Interfejs informuje użytkownika o sukcesie lub błędzie.
+
+#### SCENARIUSZ ALTERNATYWNY 1 (Błędne dane logowania):
+- Użytkownik wprowadza błędne dane logowania w formularzu.
+- Interfejs logowania przesyła dane do serwera autoryzacji.
+- Serwer autoryzacji weryfikuje dane w bazie danych.
+- Baza danych zwraca informację o braku dopasowania.
+- Serwer zwraca informację o błędzie.
+- Interfejs wyświetla komunikat o błędnych danych logowania.
+
