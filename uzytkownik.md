@@ -84,3 +84,49 @@ flowchart TD
 
     n1@{ shape: text}
 ```
+
+## DIAGRAMY SEKWENCJI
+
+### DIAGRAM SEKWENCJI DLA PRZYPADKU UŻYCIA WYBÓR JĘZYKA
+### SCENARIUSZ GŁÓWNY
+- **AKTOR**: Użytkownik
+- **OBIEKTY**: Interfejs biletomatu, Serwer, BazaDanych
+- **KOLEJNOŚĆ KOMUNIKATÓW**:
+  1. Użytkownik rozpoczyna interakcję.
+  2. Interfejs biletomatu wyświetla opcje języka.
+  3. Użytkownik wybiera język.
+  4. Interfejs biletomatu przesyła wybór do serwera.
+  5. Serwer zapisuje dane w bazie.
+  6. Interfejs biletomatu wyświetla interfejs w wybranym języku.
+
+### SCENARIUSZ ALTERNATYWNY: Rezygnacja
+- **KOLEJNOŚĆ KOMUNIKATÓW**:
+  1. Użytkownik anuluje transakcję.
+  2. Interfejs biletomatu przekazuje żądanie anulowania do serwera.
+  3. Serwer potwierdza anulowanie interakcji.
+  4. Interfejs biletomatu wyświetla informację o anulowaniu.
+
+### WIZUALIZACJA DIAGRAMU SEKWENCJI
+```mermaid
+sequenceDiagram
+  actor Użytkownik as Użytkownik
+  participant InterfejsBiletomatu as InterfejsBiletomatu
+  participant Serwer as Serwer
+  participant BazaDanych as BazaDanych
+
+  Użytkownik ->> InterfejsBiletomatu: Rozpoczęcie interakcji
+  InterfejsBiletomatu -->> Użytkownik: Wyświetlenie opcji języka
+  Użytkownik ->> InterfejsBiletomatu: Wybór języka
+  InterfejsBiletomatu ->> Serwer: Przekazanie wybranego języka
+  Serwer ->> BazaDanych: Zapis wybranego języka
+  BazaDanych -->> Serwer: Potwierdzenie
+  Serwer -->> InterfejsBiletomatu: Potwierdzenie dostosowania
+  InterfejsBiletomatu -->> Użytkownik: Wyświetlenie interfejsu w wybranym języku
+  alt Rezygnacja
+    Użytkownik ->> InterfejsBiletomatu: Anulowanie transakcji
+    InterfejsBiletomatu ->> Serwer: Żądanie anulowania
+    Serwer -->> InterfejsBiletomatu: Potwierdzenie anulowania
+    InterfejsBiletomatu -->> Użytkownik: Wyświetlenie informacji o anulowaniu
+  end
+
+```
