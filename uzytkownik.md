@@ -91,46 +91,46 @@ flowchart TD
 
 ### SCENARIUSZ GŁÓWNY
 - **AKTOR**: Użytkownik  
-- **OBIEKTY**: Interfejs aplikacji, Serwer, Baza danych  
+- **OBIEKTY**: Interfejs biletomatu, Serwer, Baza danych  
 - **KOLEJNOŚĆ KOMUNIKATÓW**:  
-  1. Użytkownik wybiera metodę płatności w interfejsie aplikacji.  
-  2. Interfejs aplikacji przesyła dane płatności do serwera.  
+  1. Użytkownik wybiera metodę płatności w interfejsie biletomatu.  
+  2. Interfejs biletomatu przesyła dane płatności do serwera.  
   3. Serwer wysyła żądanie weryfikacji danych płatności do bazy danych.  
   4. Baza danych zwraca wynik weryfikacji do serwera.  
   5. Serwer inicjuje realizację płatności, przesyłając żądanie do bazy danych.  
   6. Baza danych przetwarza transakcję i zwraca wynik realizacji do serwera.  
-  7. Serwer przesyła potwierdzenie realizacji płatności do interfejsu aplikacji.  
-  8. Interfejs aplikacji wyświetla użytkownikowi potwierdzenie pomyślnej płatności.  
+  7. Serwer przesyła potwierdzenie realizacji płatności do interfejsu biletomatu.  
+  8. Interfejs biletomatu wyświetla użytkownikowi potwierdzenie pomyślnej płatności.  
 
 ### SCENARIUSZ ALTERNATYWNY 1: (Niepoprawne dane płatności)
 - **KOLEJNOŚĆ KOMUNIKATÓW**:  
-  1. Użytkownik wybiera metodę płatności i wprowadza błędne dane w interfejsie aplikacji.  
-  2. Interfejs aplikacji przesyła dane do serwera.  
+  1. Użytkownik wybiera metodę płatności i wprowadza błędne dane w interfejsie biletomatu.  
+  2. Interfejs biletomatu przesyła dane do serwera.  
   3. Serwer wysyła żądanie weryfikacji danych płatności do bazy danych.  
   4. Baza danych zwraca wynik weryfikacji informujący o błędnych danych.  
-  5. Serwer przesyła komunikat o błędnych danych do interfejsu aplikacji.  
-  6. Interfejs aplikacji wyświetla użytkownikowi komunikat o błędnych danych płatności.  
+  5. Serwer przesyła komunikat o błędnych danych do interfejsu biletomatu.  
+  6. Interfejs biletomatu wyświetla użytkownikowi komunikat o błędnych danych płatności.  
 
 ### SCENARIUSZ ALTERNATYWNY 2: (Brak środków na koncie)
 - **KOLEJNOŚĆ KOMUNIKATÓW**:  
-  1. Użytkownik wybiera metodę płatności i wprowadza poprawne dane w interfejsie aplikacji.  
-  2. Interfejs aplikacji przesyła dane do serwera.  
+  1. Użytkownik wybiera metodę płatności i wprowadza poprawne dane w interfejsie biletomatu.  
+  2. Interfejs biletomatu przesyła dane do serwera.  
   3. Serwer wysyła żądanie realizacji płatności do bazy danych.  
   4. Baza danych zwraca wynik weryfikacji informujący o braku środków na koncie.  
-  5. Serwer przesyła komunikat o braku środków do interfejsu aplikacji.  
-  6. Interfejs aplikacji wyświetla użytkownikowi komunikat o braku środków na koncie.  
+  5. Serwer przesyła komunikat o braku środków do interfejsu biletomatu.  
+  6. Interfejs biletomatu wyświetla użytkownikowi komunikat o braku środków na koncie.  
 
 ### SCENARIUSZ ALTERNATYWNY 3: (Anulowanie transakcji przez użytkownika)
 - **KOLEJNOŚĆ KOMUNIKATÓW**:  
-  1. Użytkownik klika przycisk "Anuluj" w interfejsie aplikacji.  
-  2. Interfejs aplikacji przesyła informację o anulowaniu transakcji do serwera.  
-  3. Serwer potwierdza anulowanie transakcji i przesyła potwierdzenie do interfejsu aplikacji.  
-  4. Interfejs aplikacji wyświetla użytkownikowi komunikat o anulowaniu transakcji.  
+  1. Użytkownik klika przycisk "Anuluj" w interfejsie biletomatu.  
+  2. Interfejs biletomatu przesyła informację o anulowaniu transakcji do serwera.  
+  3. Serwer potwierdza anulowanie transakcji i przesyła potwierdzenie do interfejsu biletomatu.  
+  4. Interfejs biletomatu wyświetla użytkownikowi komunikat o anulowaniu transakcji.  
 
 ``` mermaid
 sequenceDiagram
     actor Uzytkownik as Użytkownik
-    participant Interfejs as Interfejs aplikacji
+    participant Interfejs as Interfejs biletomatu
     participant Serwer as Serwer
     participant Baza as Baza danych
 
