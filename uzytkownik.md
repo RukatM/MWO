@@ -252,6 +252,7 @@ sequenceDiagram
   3. Serwer potwierdza anulowanie transakcji i przesyła potwierdzenie do interfejsu biletomatu.  
   4. Interfejs biletomatu wyświetla użytkownikowi komunikat o anulowaniu transakcji.  
 
+### WIZUALIZACJA DIAGRAMU SEKWENCJI
 ``` mermaid
 sequenceDiagram
     actor Uzytkownik as Użytkownik
@@ -286,4 +287,69 @@ sequenceDiagram
         Serwer-->>Interfejs: Potwierdzenie anulowania
         Interfejs-->>Uzytkownik: Wyświetlenie komunikatu o anulowaniu
     end
+```
+
+### DIAGRAM SEKWENCJI DLA PRZYPADKU UŻYCIA WYŚWIETLANIE INSTRUKCJI
+
+### SCENARIUSZ GŁÓWNY
+- **AKTOR**: Użytkownik  
+- **OBIEKTY**: Interfejs aplikacji, Serwer  
+- **KOLEJNOŚĆ KOMUNIKATÓW**:  
+  1. Użytkownik rozpoczyna interakcję w interfejsie biletomatu.  
+  2. Interfejs biletomatu przesyła żądanie pobrania instrukcji do serwera.  
+  3. Serwer zwraca instrukcje do interfejsu biletomatu.  
+  4. Interfejs biletomatu wyświetla użytkownikowi podstawowe instrukcje.  
+  5. Użytkownik postępuje zgodnie z wyświetlonymi instrukcjami.  
+  6. Interfejs biletomatu przesyła działania użytkownika do serwera.  
+  7. Serwer potwierdza poprawność działań użytkownika.  
+  8. Interfejs biletomatu wyświetla użytkownikowi potwierdzenie wykonania działań.  
+
+### SCENARIUSZ ALTERNATYWNY 1: (Instrukcje niezrozumiałe)
+- **KOLEJNOŚĆ KOMUNIKATÓW**:  
+  1. Użytkownik zgłasza żądanie szczegółowej pomocy w interfejsie biletomatu.  
+  2. Interfejs biletomatu przesyła żądanie szczegółowej pomocy do serwera.  
+  3. Serwer dostarcza szczegółowe instrukcje do interfejsu biletomatu.  
+  4. Interfejs biletomatu wyświetla użytkownikowi szczegółowe instrukcje.  
+
+### SCENARIUSZ ALTERNATYWNY 2: (Anulowanie transakcji)
+- **KOLEJNOŚĆ KOMUNIKATÓW**:  
+  1. Użytkownik klika przycisk "Anuluj" w interfejsie biletomatu.  
+  2. Interfejs aplikacji przesyła informację o anulowaniu transakcji do serwera.  
+  3. Serwer potwierdza anulowanie transakcji i przesyła potwierdzenie do interfejsu biletomatu.  
+  4. Interfejs biletomatu wyświetla użytkownikowi komunikat o anulowaniu transakcji.  
+
+### WIZUALIZACJA DIAGRAMU SEKWENCJI
+``` mermaid
+sequenceDiagram
+    actor Uzytkownik as Użytkownik
+    participant Interfejs as Interfejs biletomatu
+    participant Serwer as Serwer
+
+    Uzytkownik->>Interfejs: Rozpoczęcie interakcji
+    Interfejs->>Serwer: Pobranie instrukcji
+    Serwer-->>Interfejs: Wyświetlenie instrukcji
+
+    Interfejs-->>Uzytkownik: Wyświetlenie podstawowych instrukcji
+
+    alt Instrukcje niezrozumiałe
+
+    Uzytkownik->>Interfejs: Żądanie szczegółowej pomocy
+    Interfejs->>Serwer: Pobranie szczegółowej pomocy
+    Serwer-->>Interfejs: Dostarczenie szczegółowej pomocy
+    Interfejs-->>Uzytkownik: Wyświetlenie szczegółowej pomocy
+
+    end
+
+    alt Anulowanie transakcji
+        Uzytkownik->>Interfejs: Kliknięcie "Anuluj"
+        Interfejs->>Serwer: Informacja o anulowaniu
+        Serwer-->>Interfejs: Potwierdzenie anulowania
+        Interfejs-->>Uzytkownik: Wyświetlenie komunikatu o anulowaniu
+    end
+
+    Uzytkownik->>Interfejs: Postępowanie według instrukcji
+
+    Interfejs->>Serwer: Przekazanie działań użytkownika
+    Serwer-->>Interfejs: Potwierdzenie działań
+    Interfejs-->>Uzytkownik: Wyświetlenie potwierdzenia
 ```
