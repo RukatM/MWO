@@ -84,3 +84,82 @@ flowchart TD
 
     n1@{ shape: text}
 ```
+
+## DIAGRAMY SEKWENCJI
+
+### DIAGRAM SEKWENCJI DLA PRZYPADKU UŻYCIA SPRAWDZENIE POPRAWNOŚCI TRANSAKCJI
+### SCENARIUSZ GŁÓWNY
+- **AKTOR**: Użytkownik
+- **OBIEKTY**: Interfejs biletomatu, Serwer, BazaDanych
+- **KOLEJNOŚĆ KOMUNIKATÓW**:
+  1. Użytkownik wybiera bilet i sposób płatności.
+  2. Interfejs biletomatu wyświetla podsumowanie transakcji.
+  3. Użytkownik potwierdza transakcję.
+  4. Interfejs biletomatu przesyła dane transakcji do serwera.
+  5. Serwer sprawdza poprawność transakcji w bazie danych.
+  6. Serwer potwierdza poprawność transakcji.
+  7. Interfejs biletomatu wyświetla komunikat o zakończeniu transakcji.
+
+---
+
+### SCENARIUSZ ALTERNATYWNY 1: (Cofnięcie transakcji)
+- **KOLEJNOŚĆ KOMUNIKATÓW**:
+  1. Użytkownik cofa transakcję.
+  2. Interfejs biletomatu anuluje obecne dane transakcji.
+  3. Interfejs biletomatu wyświetla ekran wyboru biletu i sposobu płatności.
+
+---
+
+### SCENARIUSZ ALTERNATYWNY 2: (Rezygnacja)
+- **KOLEJNOŚĆ KOMUNIKATÓW**:
+  1. Użytkownik anuluje transakcję.
+  2. Interfejs biletomatu przekazuje żądanie anulowania do serwera.
+  3. Serwer potwierdza anulowanie interakcji.
+  4. Interfejs biletomatu wyświetla informację o anulowaniu.
+
+---
+
+### SCENARIUSZ ALTERNATYWNY 3: (Błąd)
+1. Serwer wykrywa błąd poprawności transakcji
+2. Serwer przesyła komunikat o błędzie do interfejsu biletomatu.
+3. Interfejs biletomatu wyświetla użytkownikowi ostrzeżenie o błędzie.
+
+### WIZUALIZACJA DIAGRAMU SEKWENCJI
+```mermaid
+sequenceDiagram
+    actor Użytkownik
+    participant InterfejsBiletomatu
+    participant Serwer
+    participant BazaDanych
+
+    Użytkownik ->> InterfejsBiletomatu: Wybór biletu i sposobu płatności
+    InterfejsBiletomatu ->> Użytkownik: Wyświetlenie podsumowania transakcji
+    
+    alt Potwierdzenie transakcji
+        Użytkownik ->> InterfejsBiletomatu: Potwierdzenie transakcji
+        InterfejsBiletomatu ->> Serwer: Przesłanie danych transakcji
+        Serwer ->> BazaDanych: Sprawdzenie poprawności transakcji
+        alt Błąd poprawności transakcji
+            BazaDanych -->> Serwer: Wykryto błąd
+            Serwer ->> InterfejsBiletomatu: Komunikat o błędzie
+            InterfejsBiletomatu ->> Użytkownik: Wyświetlenie ostrzeżenia o błędzie
+        else Transakcja poprawna
+            BazaDanych -->> Serwer: Potwierdzenie poprawności
+            Serwer -->> InterfejsBiletomatu: Potwierdzenie poprawności
+            InterfejsBiletomatu ->> Użytkownik: Wyświetlenie komunikatu o zakończeniu transakcji
+        end
+    else Cofnięcie transakcji
+        Użytkownik ->> InterfejsBiletomatu: Cofnięcie transakcji
+        InterfejsBiletomatu ->> InterfejsBiletomatu: Anulowanie obecnych danych transakcji
+        InterfejsBiletomatu ->> Użytkownik: Wyświetlenie ekranu wyboru biletu i sposobu płatności
+    end
+
+    alt Rezygnacja
+        Użytkownik ->> InterfejsBiletomatu: Anulowanie transakcji
+        InterfejsBiletomatu ->> Serwer: Przekazanie żądania anulowania
+        Serwer -->> InterfejsBiletomatu: Potwierdzenie anulowania
+        InterfejsBiletomatu ->> Użytkownik: Wyświetlenie informacji o anulowaniu
+    end
+
+```
+
