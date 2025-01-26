@@ -87,35 +87,238 @@ flowchart TD
 
 ## DIAGRAMY SEKWENCJI
 
+### DIAGRAM SEKWENCJI DLA PRZYPADKU UŻYCIA SPRAWDZENIE POPRAWNOŚCI TRANSAKCJI
+
+### SCENARIUSZ GŁÓWNY
+- **AKTOR**: Użytkownik
+- **OBIEKTY**: Interfejs biletomatu, Serwer, BazaDanych
+- **KOLEJNOŚĆ KOMUNIKATÓW**:
+  1. Użytkownik wybiera bilet i sposób płatności.
+  2. Interfejs biletomatu wyświetla podsumowanie transakcji.
+  3. Użytkownik potwierdza transakcję.
+  4. Interfejs biletomatu przesyła dane transakcji do serwera.
+  5. Serwer sprawdza poprawność transakcji w bazie danych.
+  6. Serwer potwierdza poprawność transakcji.
+  7. Interfejs biletomatu wyświetla komunikat o zakończeniu transakcji.
+
+---
+
+### SCENARIUSZ ALTERNATYWNY 1: (Cofnięcie transakcji)
+- **KOLEJNOŚĆ KOMUNIKATÓW**:
+  1. Użytkownik cofa transakcję.
+  2. Interfejs biletomatu anuluje obecne dane transakcji.
+  3. Interfejs biletomatu wyświetla ekran wyboru biletu i sposobu płatności.
+
+---
+
+### SCENARIUSZ ALTERNATYWNY 2: (Rezygnacja)
+- **KOLEJNOŚĆ KOMUNIKATÓW**:
+  1. Użytkownik rozpoczyna interakcję.
+  2. Interfejs biletomatu wyświetla opcje języka.
+  3. Użytkownik wybiera język.
+  4. Interfejs biletomatu przesyła wybór do serwera.
+  5. Serwer zapisuje dane w bazie.
+  6. Interfejs biletomatu wyświetla interfejs w wybranym języku.
+
+---
+
+### SCENARIUSZ ALTERNATYWNY 3: (Błąd)
+- **KOLEJNOŚĆ KOMUNIKATÓW**:
+  1. Serwer wykrywa błąd poprawności transakcji
+  2. Serwer przesyła komunikat o błędzie do interfejsu biletomatu.
+  3. Interfejs biletomatu wyświetla użytkownikowi ostrzeżenie o błędzie.
+
+### WIZUALIZACJA DIAGRAMU SEKWENCJI
+```mermaid
+sequenceDiagram
+    actor Użytkownik
+    participant InterfejsBiletomatu
+    participant Serwer
+    participant BazaDanych
+
+    Użytkownik ->> InterfejsBiletomatu: Wybór biletu i sposobu płatności
+    InterfejsBiletomatu ->> Użytkownik: Wyświetlenie podsumowania transakcji
+    
+    alt Potwierdzenie transakcji
+        Użytkownik ->> InterfejsBiletomatu: Potwierdzenie transakcji
+        InterfejsBiletomatu ->> Serwer: Przesłanie danych transakcji
+        Serwer ->> BazaDanych: Sprawdzenie poprawności transakcji
+        alt Błąd poprawności transakcji
+            BazaDanych -->> Serwer: Wykryto błąd
+            Serwer ->> InterfejsBiletomatu: Komunikat o błędzie
+            InterfejsBiletomatu ->> Użytkownik: Wyświetlenie ostrzeżenia o błędzie
+        else Transakcja poprawna
+            BazaDanych -->> Serwer: Potwierdzenie poprawności
+            Serwer -->> InterfejsBiletomatu: Potwierdzenie poprawności
+            InterfejsBiletomatu ->> Użytkownik: Wyświetlenie komunikatu o zakończeniu transakcji
+        end
+    else Cofnięcie transakcji
+        Użytkownik ->> InterfejsBiletomatu: Cofnięcie transakcji
+        InterfejsBiletomatu ->> InterfejsBiletomatu: Anulowanie obecnych danych transakcji
+        InterfejsBiletomatu ->> Użytkownik: Wyświetlenie ekranu wyboru biletu i sposobu płatności
+    end
+
+    alt Rezygnacja
+        Użytkownik ->> InterfejsBiletomatu: Anulowanie transakcji
+        InterfejsBiletomatu ->> Serwer: Przekazanie żądania anulowania
+        Serwer -->> InterfejsBiletomatu: Potwierdzenie anulowania
+        InterfejsBiletomatu ->> Użytkownik: Wyświetlenie informacji o anulowaniu
+    end
+
+```
+
+### DIAGRAM SEKWENCJI DLA PRZYPADKU UŻYCIA WYBÓR JĘZYKA
+
+### SCENARIUSZ GŁÓWNY
+- **AKTOR**: Użytkownik
+- **OBIEKTY**: Interfejs biletomatu, Serwer, BazaDanych
+- **KOLEJNOŚĆ KOMUNIKATÓW**:
+  1. Użytkownik rozpoczyna interakcję.
+  2. Interfejs biletomatu wyświetla opcje języka.
+  3. Użytkownik wybiera język.
+  4. Interfejs biletomatu przesyła wybór do serwera.
+  5. Serwer zapisuje dane w bazie.
+  6. Interfejs biletomatu wyświetla interfejs w wybranym języku.
+
+### SCENARIUSZ ALTERNATYWNY: Rezygnacja
+- **KOLEJNOŚĆ KOMUNIKATÓW**:
+  1. Użytkownik anuluje transakcję.
+  2. Interfejs biletomatu przekazuje żądanie anulowania do serwera.
+  3. Serwer potwierdza anulowanie interakcji.
+  4. Interfejs biletomatu wyświetla informację o anulowaniu.
+
+### WIZUALIZACJA DIAGRAMU SEKWENCJI
+```mermaid
+sequenceDiagram
+  actor Użytkownik as Użytkownik
+  participant InterfejsBiletomatu as InterfejsBiletomatu
+  participant Serwer as Serwer
+  participant BazaDanych as BazaDanych
+
+  Użytkownik ->> InterfejsBiletomatu: Rozpoczęcie interakcji
+  InterfejsBiletomatu -->> Użytkownik: Wyświetlenie opcji języka
+  Użytkownik ->> InterfejsBiletomatu: Wybór języka
+  InterfejsBiletomatu ->> Serwer: Przekazanie wybranego języka
+  Serwer ->> BazaDanych: Zapis wybranego języka
+  BazaDanych -->> Serwer: Potwierdzenie
+  Serwer -->> InterfejsBiletomatu: Potwierdzenie dostosowania
+  InterfejsBiletomatu -->> Użytkownik: Wyświetlenie interfejsu w wybranym języku
+  alt Rezygnacja
+    Użytkownik ->> InterfejsBiletomatu: Anulowanie transakcji
+    InterfejsBiletomatu ->> Serwer: Żądanie anulowania
+    Serwer -->> InterfejsBiletomatu: Potwierdzenie anulowania
+    InterfejsBiletomatu -->> Użytkownik: Wyświetlenie informacji o anulowaniu
+  end
+
+```
+
+### DIAGRAM SEKWENCJI DLA PRZYPADKU UŻYCIA PŁATNOŚĆ ZA BILET
+
+### SCENARIUSZ GŁÓWNY
+- **AKTOR**: Użytkownik  
+- **OBIEKTY**: Interfejs biletomatu, Serwer, Baza danych  
+- **KOLEJNOŚĆ KOMUNIKATÓW**:  
+  1. Użytkownik wybiera metodę płatności w interfejsie biletomatu.  
+  2. Interfejs biletomatu przesyła dane płatności do serwera.  
+  3. Serwer wysyła żądanie weryfikacji danych płatności do bazy danych.  
+  4. Baza danych zwraca wynik weryfikacji do serwera.  
+  5. Serwer inicjuje realizację płatności, przesyłając żądanie do bazy danych.  
+  6. Baza danych przetwarza transakcję i zwraca wynik realizacji do serwera.  
+  7. Serwer przesyła potwierdzenie realizacji płatności do interfejsu biletomatu.  
+  8. Interfejs biletomatu wyświetla użytkownikowi potwierdzenie pomyślnej płatności.  
+
+### SCENARIUSZ ALTERNATYWNY 1: (Niepoprawne dane płatności)
+- **KOLEJNOŚĆ KOMUNIKATÓW**:  
+  1. Użytkownik wybiera metodę płatności i wprowadza błędne dane w interfejsie biletomatu.  
+  2. Interfejs biletomatu przesyła dane do serwera.  
+  3. Serwer wysyła żądanie weryfikacji danych płatności do bazy danych.  
+  4. Baza danych zwraca wynik weryfikacji informujący o błędnych danych.  
+  5. Serwer przesyła komunikat o błędnych danych do interfejsu biletomatu.  
+  6. Interfejs biletomatu wyświetla użytkownikowi komunikat o błędnych danych płatności.  
+
+### SCENARIUSZ ALTERNATYWNY 2: (Brak środków na koncie)
+- **KOLEJNOŚĆ KOMUNIKATÓW**:  
+  1. Użytkownik wybiera metodę płatności i wprowadza poprawne dane w interfejsie biletomatu.  
+  2. Interfejs biletomatu przesyła dane do serwera.  
+  3. Serwer wysyła żądanie realizacji płatności do bazy danych.  
+  4. Baza danych zwraca wynik weryfikacji informujący o braku środków na koncie.  
+  5. Serwer przesyła komunikat o braku środków do interfejsu biletomatu.  
+  6. Interfejs biletomatu wyświetla użytkownikowi komunikat o braku środków na koncie.  
+
+### SCENARIUSZ ALTERNATYWNY 3: (Anulowanie transakcji przez użytkownika)
+- **KOLEJNOŚĆ KOMUNIKATÓW**:  
+  1. Użytkownik klika przycisk "Anuluj" w interfejsie biletomatu.  
+  2. Interfejs biletomatu przesyła informację o anulowaniu transakcji do serwera.  
+  3. Serwer potwierdza anulowanie transakcji i przesyła potwierdzenie do interfejsu biletomatu.  
+  4. Interfejs biletomatu wyświetla użytkownikowi komunikat o anulowaniu transakcji.  
+
+### WIZUALIZACJA DIAGRAMU SEKWENCJI
+``` mermaid
+sequenceDiagram
+    actor Uzytkownik as Użytkownik
+    participant Interfejs as Interfejs biletomatu
+    participant Serwer as Serwer
+    participant Baza as Baza danych
+
+    Uzytkownik->>Interfejs: Wybór metody płatności
+    Interfejs->>Serwer: Przesłanie danych płatności
+    Serwer->>Baza: Weryfikacja danych płatności
+    Baza-->>Serwer: Wynik weryfikacji
+
+    alt Poprawne dane płatności
+        Serwer->>Baza: Realizacja płatności
+        Baza-->>Serwer: Wynik realizacji
+
+        alt Brak środków na koncie
+            Serwer-->>Interfejs: Komunikat o braku środków
+            Interfejs-->>Uzytkownik: Wyświetlenie komunikatu o braku środków
+        else Wystarczające środki na koncie
+            Serwer-->>Interfejs: Potwierdzenie płatności
+            Interfejs-->>Uzytkownik: Wyświetlenie potwierdzenia
+        end
+    else Niepoprawne dane płatności
+        Serwer-->>Interfejs: Komunikat o błędnych danych
+        Interfejs-->>Uzytkownik: Wyświetlenie komunikatu o błędzie
+    end
+
+    alt Anulowanie transakcji
+        Uzytkownik->>Interfejs: Kliknięcie "Anuluj"
+        Interfejs->>Serwer: Informacja o anulowaniu
+        Serwer-->>Interfejs: Potwierdzenie anulowania
+        Interfejs-->>Uzytkownik: Wyświetlenie komunikatu o anulowaniu
+    end
+```
+
 ### DIAGRAM SEKWENCJI DLA PRZYPADKU UŻYCIA WYŚWIETLANIE INSTRUKCJI
 
 ### SCENARIUSZ GŁÓWNY
 - **AKTOR**: Użytkownik  
 - **OBIEKTY**: Interfejs aplikacji, Serwer  
 - **KOLEJNOŚĆ KOMUNIKATÓW**:  
-  1. Użytkownik rozpoczyna interakcję w interfejsie aplikacji.  
-  2. Interfejs aplikacji przesyła żądanie pobrania instrukcji do serwera.  
-  3. Serwer zwraca instrukcje do interfejsu aplikacji.  
-  4. Interfejs aplikacji wyświetla użytkownikowi podstawowe instrukcje.  
+  1. Użytkownik rozpoczyna interakcję w interfejsie biletomatu.  
+  2. Interfejs biletomatu przesyła żądanie pobrania instrukcji do serwera.  
+  3. Serwer zwraca instrukcje do interfejsu biletomatu.  
+  4. Interfejs biletomatu wyświetla użytkownikowi podstawowe instrukcje.  
   5. Użytkownik postępuje zgodnie z wyświetlonymi instrukcjami.  
-  6. Interfejs aplikacji przesyła działania użytkownika do serwera.  
+  6. Interfejs biletomatu przesyła działania użytkownika do serwera.  
   7. Serwer potwierdza poprawność działań użytkownika.  
-  8. Interfejs aplikacji wyświetla użytkownikowi potwierdzenie wykonania działań.  
+  8. Interfejs biletomatu wyświetla użytkownikowi potwierdzenie wykonania działań.  
 
 ### SCENARIUSZ ALTERNATYWNY 1: (Instrukcje niezrozumiałe)
 - **KOLEJNOŚĆ KOMUNIKATÓW**:  
-  1. Użytkownik zgłasza żądanie szczegółowej pomocy w interfejsie aplikacji.  
-  2. Interfejs aplikacji przesyła żądanie szczegółowej pomocy do serwera.  
-  3. Serwer dostarcza szczegółowe instrukcje do interfejsu aplikacji.  
-  4. Interfejs aplikacji wyświetla użytkownikowi szczegółowe instrukcje.  
+  1. Użytkownik zgłasza żądanie szczegółowej pomocy w interfejsie biletomatu.  
+  2. Interfejs biletomatu przesyła żądanie szczegółowej pomocy do serwera.  
+  3. Serwer dostarcza szczegółowe instrukcje do interfejsu biletomatu.  
+  4. Interfejs biletomatu wyświetla użytkownikowi szczegółowe instrukcje.  
 
 ### SCENARIUSZ ALTERNATYWNY 2: (Anulowanie transakcji)
 - **KOLEJNOŚĆ KOMUNIKATÓW**:  
-  1. Użytkownik klika przycisk "Anuluj" w interfejsie aplikacji.  
+  1. Użytkownik klika przycisk "Anuluj" w interfejsie biletomatu.  
   2. Interfejs aplikacji przesyła informację o anulowaniu transakcji do serwera.  
-  3. Serwer potwierdza anulowanie transakcji i przesyła potwierdzenie do interfejsu aplikacji.  
-  4. Interfejs aplikacji wyświetla użytkownikowi komunikat o anulowaniu transakcji.  
+  3. Serwer potwierdza anulowanie transakcji i przesyła potwierdzenie do interfejsu biletomatu.  
+  4. Interfejs biletomatu wyświetla użytkownikowi komunikat o anulowaniu transakcji.  
 
+### WIZUALIZACJA DIAGRAMU SEKWENCJI
 ``` mermaid
 sequenceDiagram
     actor Uzytkownik as Użytkownik
@@ -150,4 +353,3 @@ sequenceDiagram
     Serwer-->>Interfejs: Potwierdzenie działań
     Interfejs-->>Uzytkownik: Wyświetlenie potwierdzenia
 ```
-
