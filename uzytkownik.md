@@ -18,11 +18,17 @@ licznik czasu), aby móc szybko podjąć działanie.
 
 ```mermaid
 flowchart TD
-    A["Rozpoczęcie interakcji"] -- &lt;&lt;include&gt;&gt; --> B["Podstawowe instrukcje"] & E["Anulowanie transakcji"]
-    B --> C["Postępowanie według instrukcji"]
-    F["Szczegółowa pomoc"] -- &lt;&lt;Extend&gt;&gt; --> B
-    n1["Użytkownik"] --> A
+    B["<br>Wyświetlenie instrukcji<br>"] --> C["Postępowanie według instrukcji"]
+    B -. "<span style=padding-left:>&lt;&lt;include&gt;&gt;</span>" .-> n3["Anulowanie transakcji<br>"] & n4["Podstawowe instrukcje<br>"]
+    n1["Użytkownik"] --> A["Rozpoczęcie interakcji<br>"]
+    A --> B
+    A -. "<span style=padding-left:>&lt;&lt;include&gt;&gt;</span>" .-> n3
+    C --> n2["Wyświetlenie pomocy<br>"]
+    C -. "<span style=padding-left:>&lt;&lt;include&gt;&gt;</span>" .-> n3
+    n2 -. &lt;&lt;include&gt;&gt; .-> n3
+    n5["Szczegółowa pomoc<br>"] -. "<span style=padding-left:>&lt;&lt;extend&gt;&gt;</span>" .-> n2
 
+    C@{ shape: rect}
     n1@{ shape: text}
 ```
 
@@ -30,13 +36,16 @@ flowchart TD
 
 ``` mermaid
 flowchart TD
-    n1["Użytkownik"] --> A["Wybór biletu i metody płatności"]
-    A -- &lt;&lt;include&gt;&gt; --> B["Wyświetlenie podsumowania transakcji"]
-    B --> C["Potwierdzenie lub cofnięcie"]
+    n1["Użytkownik"] --> A["Wybór biletu i płatności"]
+    B["Wyświetlenie podsumowania<br>"] --> C["Potwierdzenie lub cofnięcie"]
+    B -. "<span style=padding-left:>&lt;&lt;include&gt;&gt;</span>" .-> E["Anulowanie transakcji"] & n2["Podsumowanie transakcji<br>"]
     C --> D["Kontynuacja lub anulowanie"]
-    C -- &lt;&lt;include&gt;&gt; --> E["Anulowanie transakcji"]
-    D -- &lt;&lt;extend&gt;&gt; --> F["Ostrzeżenie o błędnym wyborze"]
-    
+    C -. &lt;&lt;include&gt;&gt; .-> E
+    A --> B
+    A -. "<span style=padding-left:>&lt;&lt;include&gt;&gt;</span>" .-> E
+    D -. "<span style=padding-left:>&lt;&lt;include&gt;&gt;</span>" .-> E
+    F["Ostrzeżenie o błędzie"] -. "<span style=padding-left:>&lt;&lt;extend&gt;&gt;</span>" .-> D
+
     n1@{ shape: text}
  ```
     
@@ -44,13 +53,16 @@ flowchart TD
 
 ``` mermaid
 flowchart TD
-    n1["Użytkownik"] --> A["Uruchomienie biletomatu"]
+    n1["Użytkownik"] --> A["Rozpoczęcie interakcji"]
     A --> B["Wyświetlenie opcji języka"]
+    A -. "<span style=padding-left:>&lt;&lt;include&gt;&gt;</span>" .-> n2["Domyślny język<br>"]
     B --> C["Wybór języka"]
-    C -- &lt;&lt;include&gt;&gt; --> D["Ustawienie domyślnego języka"]
-    C --> E["Dostosowanie interfejsu"]
-    B -- &lt;&lt;extend&gt;&gt; --> F["Wyświetlenie listy popularnych języków"]
-    A -- &lt;&lt;include&gt;&gt; --> G["Anulowanie transakcji"]
+    B -. "<span style=padding-left:>&lt;&lt;include&gt;&gt;</span>" .-> G["Anulowanie transakcji"]
+    C --> E["Dostosowanie interfejsu <br>"]
+    C -. "<span style=padding-left:>&lt;&lt;include&gt;&gt;</span>" .-> G
+    A -. &lt;&lt;include&gt;&gt; .-> G
+    F["Lista<br>popularnych języków<br>"] -. "<span style=padding-left:>&lt;&lt;extend&gt;&gt;</span>" .-> B
+    E -. "<span style=padding-left:>&lt;&lt;include&gt;&gt;</span>" .-> G
 
     n1@{ shape: text}
 ```
@@ -59,11 +71,16 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    A["Wybór metody płatności"] -- &lt;&lt;include&gt;&gt; --> B["Weryfikacja metody płatności"] & E["Anulowanie transakcji"]
+    A["Wybór metody płatności"] --> B["Weryfikacja metody płatności"]
+    A -. &lt;&lt;include&gt;&gt; .-> E["Anulowanie transakcji"]
     B --> C["Realizacja płatności"]
+    B -. "<span style=padding-left:>&lt;&lt;include&gt;&gt;</span>" .-> E
+    B -. &lt;&lt;include&gt;&gt; .-> n2["Weryfikacja płatności"]
     C --> D["Potwierdzenie transakcji"]
-    F["Obsługa błędów płatności"] -- &lt;&lt;Extend&gt;&gt; --> C
+    C -. "<span style=padding-left:>&lt;&lt;include&gt;&gt;</span>" .-> E
+    F["Obsługa błędów płatności"] -. &lt;&lt;Extend&gt;&gt; .-> C
     n1["Użytkownik"] --> A
+    D -. "<span style=padding-left:>&lt;&lt;include&gt;&gt;</span>" .-> E
 
     n1@{ shape: text}
 ```
