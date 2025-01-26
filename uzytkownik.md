@@ -87,23 +87,67 @@ flowchart TD
 
 ## DIAGRAMY SEKWENCJI
 
-### DIAGRAM SEKWENCJI DLA PRZYPADKU UŻYCIA LOGOWANIA UŻYTKOWNIKA
+### DIAGRAM SEKWENCJI DLA PRZYPADKU UŻYCIA WYŚWIETLANIE INSTRUKCJI
 
-- **AKTOR**: Użytkownik
-- **OBIEKTY**: Interfejs logowania, Serwer aplikacji, Baza danych
-- **KOLEJNOŚĆ KOMUNIKATÓW**:
-  - Użytkownik wysyła dane logowania do interfejsu.
-  - Interfejs przekazuje dane do serwera.
-  - Serwer wysyła zapytanie do bazy danych.
-  - Baza danych odpowiada.
-  - Serwer zwraca wynik do interfejsu.
-  - Interfejs informuje użytkownika o sukcesie lub błędzie.
+### SCENARIUSZ GŁÓWNY
+- **AKTOR**: Użytkownik  
+- **OBIEKTY**: Interfejs aplikacji, Serwer  
+- **KOLEJNOŚĆ KOMUNIKATÓW**:  
+  1. Użytkownik rozpoczyna interakcję w interfejsie aplikacji.  
+  2. Interfejs aplikacji przesyła żądanie pobrania instrukcji do serwera.  
+  3. Serwer zwraca instrukcje do interfejsu aplikacji.  
+  4. Interfejs aplikacji wyświetla użytkownikowi podstawowe instrukcje.  
+  5. Użytkownik postępuje zgodnie z wyświetlonymi instrukcjami.  
+  6. Interfejs aplikacji przesyła działania użytkownika do serwera.  
+  7. Serwer potwierdza poprawność działań użytkownika.  
+  8. Interfejs aplikacji wyświetla użytkownikowi potwierdzenie wykonania działań.  
 
-#### SCENARIUSZ ALTERNATYWNY 1 (Błędne dane logowania):
-- Użytkownik wprowadza błędne dane logowania w formularzu.
-- Interfejs logowania przesyła dane do serwera autoryzacji.
-- Serwer autoryzacji weryfikuje dane w bazie danych.
-- Baza danych zwraca informację o braku dopasowania.
-- Serwer zwraca informację o błędzie.
-- Interfejs wyświetla komunikat o błędnych danych logowania.
+### SCENARIUSZ ALTERNATYWNY 1: (Instrukcje niezrozumiałe)
+- **KOLEJNOŚĆ KOMUNIKATÓW**:  
+  1. Użytkownik zgłasza żądanie szczegółowej pomocy w interfejsie aplikacji.  
+  2. Interfejs aplikacji przesyła żądanie szczegółowej pomocy do serwera.  
+  3. Serwer dostarcza szczegółowe instrukcje do interfejsu aplikacji.  
+  4. Interfejs aplikacji wyświetla użytkownikowi szczegółowe instrukcje.  
+
+### SCENARIUSZ ALTERNATYWNY 2: (Anulowanie transakcji)
+- **KOLEJNOŚĆ KOMUNIKATÓW**:  
+  1. Użytkownik klika przycisk "Anuluj" w interfejsie aplikacji.  
+  2. Interfejs aplikacji przesyła informację o anulowaniu transakcji do serwera.  
+  3. Serwer potwierdza anulowanie transakcji i przesyła potwierdzenie do interfejsu aplikacji.  
+  4. Interfejs aplikacji wyświetla użytkownikowi komunikat o anulowaniu transakcji.  
+
+``` mermaid
+sequenceDiagram
+    actor Uzytkownik as Użytkownik
+    participant Interfejs as Interfejs biletomatu
+    participant Serwer as Serwer
+
+    Uzytkownik->>Interfejs: Rozpoczęcie interakcji
+    Interfejs->>Serwer: Pobranie instrukcji
+    Serwer-->>Interfejs: Wyświetlenie instrukcji
+
+    Interfejs-->>Uzytkownik: Wyświetlenie podstawowych instrukcji
+
+    alt Instrukcje niezrozumiałe
+
+    Uzytkownik->>Interfejs: Żądanie szczegółowej pomocy
+    Interfejs->>Serwer: Pobranie szczegółowej pomocy
+    Serwer-->>Interfejs: Dostarczenie szczegółowej pomocy
+    Interfejs-->>Uzytkownik: Wyświetlenie szczegółowej pomocy
+
+    end
+
+    alt Anulowanie transakcji
+        Uzytkownik->>Interfejs: Kliknięcie "Anuluj"
+        Interfejs->>Serwer: Informacja o anulowaniu
+        Serwer-->>Interfejs: Potwierdzenie anulowania
+        Interfejs-->>Uzytkownik: Wyświetlenie komunikatu o anulowaniu
+    end
+
+    Uzytkownik->>Interfejs: Postępowanie według instrukcji
+
+    Interfejs->>Serwer: Przekazanie działań użytkownika
+    Serwer-->>Interfejs: Potwierdzenie działań
+    Interfejs-->>Uzytkownik: Wyświetlenie potwierdzenia
+```
 
