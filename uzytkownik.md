@@ -474,3 +474,97 @@ classDiagram
     Interface --> Server : Przesyła dane
     Server --> Database : weryfikuje dane
 ```
+
+### Sprawdzenie poprawności transakcji
+
+## OPIS KLAS
+
+#### KLASY
+
+##### User
+- **ATRYBUTY**:
+  - `STRING selectedTicket`
+  - `STRING paymentMethod`
+- **METODY**:
+  - `VOID selectTicket(STRING ticket)`
+  - `VOID selectPaymentMethod(STRING method)`
+  - `VOID confirmTransaction()`
+  - `VOID reverseTransaction()`
+  - `VOID cancelTransaction()`
+
+##### TicketMachineInterface
+- **ATRYBUTY**:
+  - `STRING currentTicket`
+  - `STRING currentPaymentMethod`
+  - `BOOLEAN transactionConfirmed`
+- **METODY**:
+  - `VOID displaySummary()`
+  - `VOID sendTransactionData()`
+  - `VOID cancelCurrentTransaction()`
+  - `VOID displayTransactionError()`
+  - `VOID displayConfirmation()`
+  - `VOID displaySelectionScreen()`
+
+##### Server
+- **ATRYBUTY**:
+  - `STRING transactionData`
+- **METODY**:
+  - `BOOLEAN checkTransactionValidity()`
+  - `VOID handleCancellation()`
+
+##### Database
+- **ATRYBUTY**:
+  - `MAP<STRING, BOOLEAN> transactionHistory`
+- **METODY**:
+  - `BOOLEAN saveTransactionData(STRING data)`
+  - `BOOLEAN confirmValidity()`
+
+### RELACJE:
+1. **User** komunikuje się z **TicketMachineInterface** przez wybór biletu, metody płatności oraz potwierdzenie, cofnięcie lub anulowanie transakcji.
+2. **TicketMachineInterface** przesyła dane do **Server** za pomocą metody `sendTransactionData()` i odbiera od niego wyniki sprawdzania transakcji.
+3. **Server** korzysta z **Database** do weryfikacji poprawności transakcji i jej zapisu.
+4. **Database** zwraca wynik weryfikacji transakcji do **Server**.
+
+---
+
+### WIZUALIZACJA DIAGRAMU KLAS
+```mermaid
+classDiagram
+  class User {
+    - STRING selectedTicket
+    - STRING paymentMethod
+    + VOID selectTicket(STRING ticket)
+    + VOID selectPaymentMethod(STRING method)
+    + VOID confirmTransaction()
+    + VOID reverseTransaction()
+    + VOID cancelTransaction()
+  }
+
+  class TicketMachineInterface {
+    - STRING currentTicket
+    - STRING currentPaymentMethod
+    - BOOLEAN transactionConfirmed
+    + VOID displaySummary()
+    + VOID sendTransactionData()
+    + VOID cancelCurrentTransaction()
+    + VOID displayTransactionError()
+    + VOID displayConfirmation()
+    + VOID displaySelectionScreen()
+  }
+
+  class Server {
+    - STRING transactionData
+    + BOOLEAN checkTransactionValidity()
+    + VOID handleCancellation()
+  }
+
+  class Database {
+    - MAP<STRING, BOOLEAN> transactionHistory
+    + BOOLEAN saveTransactionData(STRING data)
+    + BOOLEAN confirmValidity()
+  }
+
+  User --> TicketMachineInterface : Interacts with
+  TicketMachineInterface --> Server : Sends data
+  Server --> Database : Verifies transaction
+```
