@@ -568,3 +568,83 @@ classDiagram
   TicketMachineInterface --> Server : Sends data
   Server --> Database : Verifies transaction
 ```
+
+### Wybór języka
+
+## OPIS KLAS
+
+#### KLASY
+
+##### User
+- **ATRYBUTY**:
+  - `STRING selectedLanguage`
+- **METODY**:
+  - `VOID startInteraction()`
+  - `VOID selectLanguage(STRING language)`
+  - `VOID cancelTransaction()`
+
+##### TicketMachineInterface
+- **ATRYBUTY**:
+  - `STRING displayedLanguage`
+- **METODY**:
+  - `VOID displayLanguageOptions()`
+  - `VOID adjustLanguage(STRING language)`
+  - `VOID displayInterface(STRING language)`
+  - `VOID cancelTransaction()`
+
+##### Server
+- **ATRYBUTY**:
+  - `STRING currentLanguage`
+- **METODY**:
+  - `VOID forwardSelectedLanguage(STRING language)`
+  - `VOID handleCancellation()`
+
+##### Database
+- **ATRYBUTY**:
+  - `MAP<STRING, STRING> languageSettings`
+- **METODY**:
+  - `VOID saveSelectedLanguage(STRING language)`
+  - `BOOLEAN confirmAdjustment()`
+
+### RELACJE:
+1. **User** korzysta z **TicketMachineInterface** poprzez metody `Database()`, `wybierzJęzyk(STRING language)` oraz `cancelTransaction()`.
+2. **TicketMachineInterface** komunikuje się z **Server** za pomocą metod `forwardSelectedLanguage(STRING language)` i `handleCancellation()`.
+3. **Server** zapisuje dane w **Database** poprzez metodę `saveSelectedLanguage(STRING language)` i potwierdza operacje przez `confirmAdjustment()`.
+4. **Database** wspiera **Server** poprzez trwałe przechowywanie ustawień językowych.
+
+---
+
+### WIZUALIZACJA DIAGRAMU KLAS
+```mermaid
+classDiagram
+  class User {
+    - STRING selectedLanguage
+    + VOID startInteraction()
+    + VOID selectLanguage(STRING language)
+    + VOID cancelTransaction()
+  }
+
+  class TicketMachineInterface {
+    - STRING displayedLanguage
+    + VOID displayLanguageOptions()
+    + VOID adjustLanguage(STRING language)
+    + VOID displayInterface(STRING language)
+    + VOID cancelTransaction()
+  }
+
+  class Server {
+    - STRING currentLanguage
+    + VOID forwardSelectedLanguage(STRING language)
+    + VOID handleCancellation()
+  }
+
+  class Database {
+    - MAP<STRING, STRING> languageSettings
+    + VOID saveSelectedLanguage(STRING language)
+    + BOOLEAN confirmAdjustment()
+  }
+
+  User --> TicketMachineInterface : Interacts with
+  TicketMachineInterface --> Server : Communicates with
+  Server --> Database : Saves settings
+```
