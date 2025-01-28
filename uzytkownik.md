@@ -353,8 +353,61 @@ sequenceDiagram
     Serwer-->>Interfejs: Potwierdzenie działań
     Interfejs-->>Uzytkownik: Wyświetlenie potwierdzenia
 ```
-
 ## DIAGRAMY KLAS
+### Otrzymanie instrukcji na ekranie
+
+## OPIS KLAS
+
+### KLASY
+
+#### USER
+ -ATRYBUTY: `STRING USERNAMENAME`, `STRING PASSWORD`
+ -METODY: `VOID STARTINTERACTION()`, `VOID REQUESTHELP()`, `VOID CANCELTRANSACTION()`
+
+#### INTERFACE
+ -ATRYBUTY: `STRING INSTRUCTIONS`, `STRING DETAILED_INSTRUCTION`
+ -METODY: `VOID SHOWINSTRUCTIONS()`, `VOID SHOWDETAILEDINSTRUCTION()`, `VOID SHOWCANCELMESSAGE()`, `VOID SHOWCONFIRMATION()`
+
+#### SERVER
+ -ATRYBUTY: `STRING STATUS`
+ -METODY: `VOID GETINSTRUCTIONS()`, `VOID GETDETAILEDINSTRUCTION()`, `VOID CONFIRM()`, `VOID CANCELTRANSACTION()`
+
+### RELACJE:
+- `USER` KORZYSTA Z `INTERFACE`.
+- `INTERFACE` UŻYWA `SERVER` DO POBIERANIA INSTRUKCJI I POTWIERDZANIA DZIAŁAŃ.
+
+### WIZUALIZACJA DIAGRAMU KLAS
+``` mermaid
+classDiagram
+    class User {
+        - STRING USERNAME
+        - STRING PASSWORD
+        + VOID STARTINTERACTION()
+        + VOID REQUESTHELP()
+        + VOID CANCELTRANSACTION()
+    }
+
+    class Interface {
+        - STRING INSTRUCTIONS
+        - STRING DETAILED_INSTRUCTION
+        + VOID SHOWINSTRUCTIONS()
+        + VOID SHOWDETAILEDINSTRUCTION()
+        + VOID SHOWCANCELMESSAGE()
+        + VOID SHOWCONFIRMATION()
+    }
+
+    class Server {
+        - STRING STATUS
+        + VOID GETINSTRUCTIONS()
+        + VOID GETDETAILEDINSTRUCTION()
+        + VOID CONFIRM()
+        + VOID CANCELTRANSACTION()
+    }
+
+    User --> Interface : Korzysta z
+    Interface --> Server : Pobiera instrukcje, potwierdza działania
+```
+
 ### Płatność za bilet
 
 ## OPIS KLAS
